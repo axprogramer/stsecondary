@@ -279,8 +279,8 @@ function NewBox() {
 function AddStd(e) {
   firebase.database().ref(`${db}/` + `${db3}/` + Mid.value).set(
     {
-      sumDec: su,
-      averageDec: kk,
+      sumDec: Msum.value,
+      averageDec: MaverageNov.value,
     },
   )
   selectAllData();
@@ -292,8 +292,8 @@ function UpStd(e) {
 
   firebase.database().ref(`${db}/` + `${db3}/` + Mid.value).update(
     {
-      sumDec: su,
-      averageDec: kk,
+      sumDec: Msum.value,
+      averageDec: MaverageNov.value,
     },
   )
   document.getElementById("showAlert").style.display = "block";
