@@ -1,7 +1,7 @@
 function user(){
     var user = "SalaMOM School";
     var title = "SM Sys All"
-    var position = "Primary Class"
+    var position = "Secondary Class"
     var g5a = "5A";
     var g5b = "5B";
     var name = "SalaMOM School"

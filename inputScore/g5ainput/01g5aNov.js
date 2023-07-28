@@ -10,7 +10,6 @@ const firebaseConfig = {
 var db = localStorage.getItem("inputGrade"); //Grade
 var db2 = localStorage.getItem("inputMonth"); //Month
 var db3 = localStorage.getItem("inputYear"); //Year
-var db4 = localStorage.getItem("myData13"); //simple
 
 // console.log(db4);
 // console.log(db2);
@@ -33,15 +32,10 @@ function selectAllData() {
           var id = CurrentRecord.val().id;
           var sex = CurrentRecord.val().sex;
           // var grade = CurrentRecord.val().grade;
-          var speakingNov = CurrentRecord.val().speakingNov;
-          var writingNov = CurrentRecord.val().writingNov;
-          var listeningNov = CurrentRecord.val().listeningNov;
-          var readingNov = CurrentRecord.val().readingNov;
-          var averageNov = CurrentRecord.val().averageNov;
-          var rankNOv = CurrentRecord.val().rankNOv;
+          var sumNov = CurrentRecord.val().sumNov;
+          var average = CurrentRecord.val().averageNov;
           var myKh = CurrentRecord.val().myKh;
-          addItemsToTable(name, id, sex, speakingNov, writingNov, listeningNov,
-            readingNov, averageNov, rankNOv, myKh);
+          addItemsToTable(name, id, sex, sumNov, average, myKh);
           showAuto();
           b = 1;
           document.getElementById('showNNN').value = b;
@@ -51,41 +45,13 @@ function selectAllData() {
       );
     });
 }
-//Get activity score
-getScoreAct();
-var actArr = [];
-console.log(actArr);
-function getScoreAct() {
-  firebase.database().ref(`4A/` + `recordActivity/` + `2022-2023/` + `October/`).once('value',
-    function (allact) {
-      allact.forEach(
-        function (getData) {
-          var name = getData.val().name;
-          var date = getData.val().date;
-          var total = getData.val().total;
-          actPuch(name, date, total);
-        }
-      );
-    });
-}
-function actPuch(name, date, total) {
-  actArr.push({ name, date, total });
-
-}
-function totalCount() {
-  var count = actArr.length;
-  if (actArr == count) {
-  }
-}
-totalCount();
 
 
 window.onload = selectAllData;
 var studentN0;
 
 var stdList = [];
-function addItemsToTable(name, id, sex, speakingNov, writingNov, listeningNov,
-  readingNov, averageNov, rankNOv, myKh) {
+function addItemsToTable(name, id, sex, sumNov, average, myKh) {
   var tbody = document.getElementById('showData');
   var trow = document.createElement('tr');
   var td0 = document.createElement('td');
@@ -96,30 +62,66 @@ function addItemsToTable(name, id, sex, speakingNov, writingNov, listeningNov,
   var td5 = document.createElement('td');
   var td6 = document.createElement('td');
   var td7 = document.createElement('td');
+  td4.contentEditable = true;
+  var sumID = `${id}sum`;
+  var av = `${id}av`;
+  td3.id = sumID;
+  td4.id = av;
 
 
 
-
-  stdList.push([name, id, sex, speakingNov, writingNov, listeningNov,
-    readingNov, averageNov, rankNOv, myKh]);
+  stdList.push([name, id, sex, sumNov, average, myKh]);
   td0.innerHTML = ++studentN0;
   td1.innerHTML = id;
   td2.innerHTML = sex;
-  td3.innerHTML = speakingNov;
-  td4.innerHTML = writingNov;
-  td5.innerHTML = listeningNov;
-  td6.innerHTML = readingNov;
-  td7.innerHTML = averageNov;
+  if(sumNov == undefined){
+    td3.innerHTML = '0';
+    
+  }else{
+    td3.innerHTML = sumNov;
+    
+  }
+  if(average == undefined){
+    td4.innerHTML = '0';
+    
+  }else{
+    td4.innerHTML = average;
 
+  }
+  const sleep = async (milliseconds) => {
+    await new Promise(resolve => {
+      return setTimeout(resolve, milliseconds);
+    });
+    let aaa = document.getElementById(`${av}`);
+    aaa.addEventListener('input',()=>{
+      var kk = aaa.innerHTML;
+      var su = kk * 4;
+      document.getElementById(`${sumID}`).innerHTML = su;
+      firebase.database().ref(`${db}/` + `${db3}/` + id).update(
+        {
+          sumNov: su,
+          averageNov: kk,
+        },
+      )
+    })
+    aaa.addEventListener('click',()=>{
+      if (document.getElementById(`${av}`).innerHTML == 0){
+        document.getElementById(`${av}`).innerHTML = '';
+        
+      } else {
+
+      }
+      
+    })
+
+  };
+  sleep(2000);
 
   trow.appendChild(td0);
   trow.appendChild(td1);
   trow.appendChild(td2);
   trow.appendChild(td3);
   trow.appendChild(td4);
-  trow.appendChild(td5);
-  trow.appendChild(td6);
-  trow.appendChild(td7);
 
   td1.innerHTML = `<button type="button" class="button-7" onclick="Fillbox(${studentN0})">${myKh}</button>`;
   tbody.appendChild(trow);
@@ -129,11 +131,12 @@ function addItemsToTable(name, id, sex, speakingNov, writingNov, listeningNov,
 var Mname = document.getElementById('myName');
 var Mid = document.getElementById('myID');
 var Msex = document.getElementById('mySex');
-var MspeakingNov = document.getElementById('mySnov');
-var MwritingNov = document.getElementById('myWnov');
-var MlisteningNov = document.getElementById('myLnov');
-var MreadingNov = document.getElementById('myRnov');
-var MaverageNov = document.getElementById('myAnov');
+// var MspeakingNov = document.getElementById('mySnov');
+// var MwritingNov = document.getElementById('myWnov');
+// var MlisteningNov = document.getElementById('myLnov');
+// var MreadingNov = document.getElementById('myRnov');
+var Msum = document.getElementById('myAnov');
+var MaverageNov = document.getElementById('myScorenov');
 var span = document.getElementById('span1');
 
 var submit = document.getElementById("mySubmit");
@@ -144,11 +147,23 @@ function showAuto() {
   Mname.value = stdList[0][0];
   Mid.value = stdList[0][1];
   Msex.value = stdList[0][2];
-  MspeakingNov.value = stdList[0][3];
-  MwritingNov.value = stdList[0][4];
-  MlisteningNov.value = stdList[0][5];
-  MreadingNov.value = stdList[0][6];
-  MaverageNov.value = stdList[0][7];
+  if (stdList[0][3] == undefined){
+    Msum.value = '';
+    
+  }else{
+    
+    Msum.value = stdList[0][3];
+  }
+  if (stdList[0][4] == undefined){
+    MaverageNov.value = '';
+    
+  }else{
+    
+    MaverageNov.value = stdList[0][4];
+  }
+  // MlisteningNov.value = stdList[0][5];
+  // MreadingNov.value = stdList[0][6];
+  // MaverageNov.value = stdList[0][7];
   btnupdate.style.display = 'inline-block';
   dele.style.display = 'inline-block';
 
@@ -175,11 +190,24 @@ function nextBtn() {
   Mname.value = stdList[oo][0];
   Mid.value = stdList[oo][1];
   Msex.value = stdList[oo][2];
-  MspeakingNov.value = stdList[oo][3];
-  MwritingNov.value = stdList[oo][4];
-  MlisteningNov.value = stdList[oo][5];
-  MreadingNov.value = stdList[oo][6];
-  MaverageNov.value = stdList[oo][7];
+  if (stdList[oo][3] == undefined) {
+    Msum.value = '';
+
+  } else {
+
+    Msum.value = stdList[oo][3];
+  }
+  if (stdList[oo][4] == undefined) {
+    MaverageNov.value = '';
+
+  } else {
+
+    MaverageNov.value = stdList[oo][4];
+  }
+
+  // MlisteningNov.value = stdList[oo][5];
+  // MreadingNov.value = stdList[oo][6];
+  // MaverageNov.value = stdList[oo][7];
 
 }
 function goBack() {
@@ -193,11 +221,24 @@ function goBack() {
   Mname.value = stdList[oo][0];
   Mid.value = stdList[oo][1];
   Msex.value = stdList[oo][2];
-  MspeakingNov.value = stdList[oo][3];
-  MwritingNov.value = stdList[oo][4];
-  MlisteningNov.value = stdList[oo][5];
-  MreadingNov.value = stdList[oo][6];
-  MaverageNov.value = stdList[oo][7];
+  if (stdList[oo][3] == undefined) {
+    Msum.value = '';
+
+  } else {
+
+    Msum.value = stdList[oo][3];
+  }
+  if (stdList[oo][4] == undefined) {
+    MaverageNov.value = '';
+
+  } else {
+
+    MaverageNov.value = stdList[oo][4];
+  }
+
+  // MlisteningNov.value = stdList[oo][5];
+  // MreadingNov.value = stdList[oo][6];
+  // MaverageNov.value = stdList[oo][7];
 }
 function Fillbox(index) {
   b = index;
@@ -212,11 +253,24 @@ function Fillbox(index) {
   Mname.value = stdList[index][0];
   Mid.value = stdList[index][1];
   Msex.value = stdList[index][2];
-  MspeakingNov.value = stdList[index][3];
-  MwritingNov.value = stdList[index][4];
-  MlisteningNov.value = stdList[index][5];
-  MreadingNov.value = stdList[index][6];
-  MaverageNov.value = stdList[index][7];
+  if (stdList[0][3] == undefined) {
+    Msum.value = '';
+
+  } else {
+
+    Msum.value = stdList[0][3];
+  }
+  if (stdList[0][4] == undefined) {
+    MaverageNov.value = '';
+
+  } else {
+
+    MaverageNov.value = stdList[0][4];
+  }
+
+  // MlisteningNov.value = stdList[index][5];
+  // MreadingNov.value = stdList[index][6];
+  // MaverageNov.value = stdList[index][7];
 
   submit.style.display = 'none';
   btnupdate.style.display = 'inline-block';
@@ -225,29 +279,7 @@ function Fillbox(index) {
 
   // }
 }
-// function Fillbox(index) {
-//   if (index == null) {
-//     submit.style.display = 'none';
-//     update.style.display = 'none';
-//     dele.style.display = 'none';
-//   }
-//   else {
-//     --index;
-//     Mname.value = stdList[index][0];
-//     Mid.value = stdList[index][1];
-//     Msex.value = stdList[index][2];
-//     MspeakingNov.value = stdList[index][3];
-//     MwritingNov.value = stdList[index][4];
-//     MlisteningNov.value = stdList[index][5];
-//     MreadingNov.value = stdList[index][6];
-//     MaverageNov.value = stdList[index][7];
-//     submit.style.display = 'none';
-//     update.style.display = 'inline-block';
-//     dele.style.display = 'none';
 
-
-//   }
-// }
 function NewBox() {
   submit.style.display = 'none';
   btnupdate.style.display = 'none';
@@ -255,34 +287,21 @@ function NewBox() {
   var Mname = document.getElementById('myName');
   var Mid = document.getElementById('myID');
   var Msex = document.getElementById('mySex');
-  var MspeakingNov = document.getElementById('mySnov');
-  var MwritingNov = document.getElementById('myWnov');
-  var MlisteningNov = document.getElementById('myLnov');
-  var MreadingNov = document.getElementById('myRnov');
-  var MaverageNov = document.getElementById('myAnov');
+  var Msum = document.getElementById('myAnov');
+  var MaverageNov = document.getElementById('myScorenov');
 
   Mname.value = "";
   Mid.value = "";
   Msex.value = "";
-  MspeakingNov.value = "";
-  MwritingNov.value = "";
-  MlisteningNov.value = "";
-  MreadingNov.value = "";
+  Msum.value = "";
   MaverageNov.value = "";
 }
 
 function AddStd(e) {
   firebase.database().ref(`${db}/` + `${db3}/` + Mid.value).set(
     {
-      name: Mname.value,
-      id: Mid.value,
-      sex: Msex.value,
-      speakingNov: MspeakingNov.value,
-      writingNov: MwritingNov.value,
-      listeningNov: MlisteningNov.value,
-      readingNov: MreadingNov.value,
+      sumNov: Msum.value,
       averageNov: MaverageNov.value,
-      rankNOv: MrankNov.value,
     },
   )
   // selectAllData();
@@ -295,13 +314,7 @@ function UpStd(e) {
 
   firebase.database().ref(`${db}/` + `${db3}/` + Mid.value).update(
     {
-      name: Mname.value,
-      id: Mid.value,
-      sex: Msex.value,
-      speakingNov: MspeakingNov.value,
-      writingNov: MwritingNov.value,
-      listeningNov: MlisteningNov.value,
-      readingNov: MreadingNov.value,
+      sumNov: Msum.value,
       averageNov: MaverageNov.value,
     },
   )
@@ -339,78 +352,15 @@ function DelStdAll() {
 
 //Divid score tables
 
-function divid2() {
-  var num9 = parseFloat(document.getElementById('myScorenov').value);
-  var score1 = num9;
-  var get4 = score1 / 4;
-  get4 = parseFloat(get4).toFixed(2);
-  document.getElementById("myWnov").value = get4;
-  document.getElementById("myLnov").value = get4;
-  document.getElementById("myRnov").value = get4;
-  document.getElementById("mySnov").value = get4;
-  document.getElementById("myAnov").value = get4;
-
-}
-function scoreFun() {
-  var check = document.getElementById("myCheck");
-  var ll = "simple";
-  var lll = "unsimple";
-  if (db4 == ll) {
-    document.getElementById('getDi').innerText = ' (/4)'
-    check.checked = true;
-  } else if (db4 == lll) {
-    document.getElementById('getDi').innerText = ' (/3)'
-    check.checked = false;
-  }
-}
-scoreFun();
 var table1 = document.getElementById("my1stsemetable");
 var table2 = document.getElementById("myTable2");
 table1.style.display = "none";
 table2.style.display = "none";
 
-function newScore() {
-  var num5 = parseFloat(document.getElementById('mySnov').value);
-  var num6 = parseFloat(document.getElementById('myWnov').value);
-  var num7 = parseFloat(document.getElementById('myLnov').value);
-  var num8 = parseFloat(document.getElementById('myRnov').value);
-  var num9 = parseFloat(document.getElementById('myScorenov').value);
-
-  var sum = num5 + num6 + num7 + num8;
-  var div = num9 / 3;
-  div = parseFloat(div).toFixed(2);
-  var uu = num5 + num9;
-  uu = parseFloat(uu).toFixed(2);
-  var lll = uu / 4;
-  lll = parseFloat(lll).toFixed(2);
-  document.getElementById("myWnov").value = div;
-  document.getElementById("myLnov").value = div;
-  document.getElementById("myRnov").value = div;
-  document.getElementById("myAnov").value = lll;
-
-}
 document.getElementById('myScorenov').addEventListener('input', function () {
-  var ll = "simple";
-  var lll = "unsimple";
-  var check = document.getElementById("myCheck");
-  if (db4 == ll) {
-    divid2();
-    check.checked = true;
-  } else if (db4 == lll) {
-    newScore();
-    check.checked = false;
-  }
+  let aver = document.getElementById('myScorenov').value;
+  let total = aver * 4;
+  total = total.toFixed(2).replace(/[.,]00$/, "");
+  document.getElementById('myAnov').value = total;
 
-})
-document.getElementById('mySnov').addEventListener('input', function () {
-  var ll = "simple";
-  var lll = "unsimple";
-  var check = document.getElementById("myCheck");
-  if (db4 == ll) {
-    divid2();
-    check.checked = true;
-  } else if (db4 == lll) {
-    newScore();
-    check.checked = false;
-  }
 })

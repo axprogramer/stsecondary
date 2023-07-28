@@ -303,18 +303,18 @@ function mySeme() {
 }
 mySeme();
 
-function scoreFunc() {
-    var checkBox = document.getElementById("myCheck");
-    if (checkBox.checked == true) {
-        var check = "simple";
-        localStorage.setItem("myData13", check);
-        window.location.reload();
-    } else {
-        var uncheck = "unsimple";
-        localStorage.setItem("myData13", uncheck);
-        window.location.reload();
-    }
-}
+// function scoreFunc() {
+//     var checkBox = document.getElementById("myCheck");
+//     if (checkBox.checked == true) {
+//         var check = "simple";
+//         localStorage.setItem("myData13", check);
+//         window.location.reload();
+//     } else {
+//         var uncheck = "unsimple";
+//         localStorage.setItem("myData13", uncheck);
+//         window.location.reload();
+//     }
+// }
 document.getElementById("myTable2").style.display = "none";
 document.getElementById("my1stsemetable").style.display = "none";
 document.getElementById("mySubmit").style.display = "none";
