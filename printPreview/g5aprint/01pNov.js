@@ -42,32 +42,26 @@ function GetData2(datas) {
   datas.forEach((data) => {
     var name = data.val().name;
     var sex = data.val().sex;
-    var speakingNov = data.val().speakingNov;
-    var writingNov = data.val().writingNov;
-    var listeningNov = data.val().listeningNov;
-    var readingNov = data.val().readingNov;
-    var averageNov = data.val().averageNov;
+    var sum = data.val().sumNov;
+    var aver = data.val().averageNov;
     var myKh = data.val().myKh;
 
 
     students.push({
       name,
       sex,
-      speakingNov,
-      writingNov,
-      listeningNov,
-      readingNov,
-      averageNov,
+      sum,
+      aver,
       myKh,
     });
   });
 
-  students.sort(function (a, b) { return b.averageNov - a.averageNov });
+  students.sort(function (a, b) { return b.aver - a.aver });
 
   for (let i = 0; i < students.length; i++) {
-    let avg = students[i].averageNov;
+    let avg = students[i].aver;
     let studentsWithRank = students.filter(
-      (student) => student.averageNov === avg
+      (student) => student.aver === avg
     );
     for (let student of studentsWithRank) {
       student.Rank = i + 1;
@@ -81,11 +75,8 @@ function GetData2(datas) {
             <td>${No}</td>
             <td>${student.name}</td>
             <td>${student.sex}</td>
-            <td>${student.speakingNov}</td>
-            <td>${student.writingNov}</td>
-            <td>${student.listeningNov}</td>
-            <td>${student.readingNov}</td>
-            <td>${student.averageNov}</td>
+            <td>${student.sum}</td>
+            <td>${student.aver}</td>
             <td>${student.Rank}</td>
     `;
     tbody.innerHTML += tr;
@@ -99,32 +90,26 @@ function GetDataView(datas) {
   datas.forEach((data) => {
     var name = data.val().name;
     var sex = data.val().sex;
-    var speakingNov = data.val().speakingNov;
-    var writingNov = data.val().writingNov;
-    var listeningNov = data.val().listeningNov;
-    var readingNov = data.val().readingNov;
-    var averageNov = data.val().averageNov;
+    var sum = data.val().sumNov;
+    var aver = data.val().averageNov;
     var myKh = data.val().myKh;
 
 
     students.push({
       name,
       sex,
-      speakingNov,
-      writingNov,
-      listeningNov,
-      readingNov,
-      averageNov,
+      sum,
+      aver,
       myKh,
     });
   });
 
-  students.sort(function (a, b) { return b.averageNov - a.averageNov });
+  students.sort(function (a, b) { return b.aver - a.aver });
 
   for (let i = 0; i < students.length; i++) {
-    let avg = students[i].averageNov;
+    let avg = students[i].aver;
     let studentsWithRank = students.filter(
-      (student) => student.averageNov === avg
+      (student) => student.aver === avg
     );
     for (let student of studentsWithRank) {
       student.Rank = i + 1;
@@ -135,7 +120,8 @@ function GetDataView(datas) {
   students.forEach((student) => {
     No++;
     var mention = "";
-    var my = parseFloat(student.averageNov);
+    var my = parseFloat(student.aver);
+    
     if (my <= 4.9) {
       mention = "Fail"
     } else if (my <= 5) {
@@ -154,13 +140,11 @@ function GetDataView(datas) {
             <td>${No}</td>
             <td>${student.name}</td>
             <td>${student.sex}</td>
-            <td>${student.speakingNov}</td>
-            <td>${student.writingNov}</td>
-            <td>${student.listeningNov}</td>
-            <td>${student.readingNov}</td>
-            <td>${student.averageNov}</td>
-            <td>${student.Rank}</td>
-            <td style="display: none;">${mention}${student.sex}</td> 
+            <td>${student.sum}</td>
+            <td>${student.aver}</td>
+            <td style="color:red;">${student.Rank}</td>
+            <td>${mention}</td>
+            <td style="display: block;">${mention}${student.sex}</td> 
     `;
     tbody.innerHTML += tr;
   });
@@ -173,31 +157,25 @@ function GetDataSave2(datas) {
   datas.forEach((data) => {
     var name = data.val().name;
     var sex = data.val().sex;
-    var speakingNov = data.val().speakingNov;
-    var writingNov = data.val().writingNov;
-    var listeningNov = data.val().listeningNov;
-    var readingNov = data.val().readingNov;
-    var averageNov = data.val().averageNov;
+    var sum = data.val().sumNov;
+    var aver = data.val().averageNov;
     var myKh = data.val().myKh;
 
 
     students.push({
       myKh,
       sex,
-      speakingNov,
-      writingNov,
-      listeningNov,
-      readingNov,
-      averageNov,
+      sum,
+      aver,
     });
   });
 
   // students.sort(function(a,b){return b.averageNov - a.averageNov });
 
   for (let i = 0; i < students.length; i++) {
-    let avg = students[i].averageNov;
+    let avg = students[i].aver;
     let studentsWithRank = students.filter(
-      (student) => student.averageNov === avg
+      (student) => student.aver === avg
     );
     for (let student of studentsWithRank) {
       student.Rank = i + 1;
