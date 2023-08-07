@@ -71,13 +71,28 @@ function GetData2(datas) {
 
   students.forEach((student) => {
     No++;
+    var mention = "";
+    var my = parseFloat(student.aver);
+
+    if (my >= 50) {
+      mention = "Very good"
+    } else if (my >= 40) {
+      mention = "Good"
+    } else if (my >= 32.5) {
+      mention = "Faily Good";
+    } else if (my >= 25) {
+      mention = "Fair";
+    } else if (my <= 24) {
+      mention = "Fail";
+    }
     let tr = `
             <td>${No}</td>
             <td>${student.name}</td>
             <td>${student.sex}</td>
             <td>${student.sum}</td>
             <td>${student.aver}</td>
-            <td>${student.Rank}</td>
+            <td style="color:red;">${student.Rank}</td>
+            <td style="color:red;">${mention}</td>
     `;
     tbody.innerHTML += tr;
   });
@@ -122,18 +137,16 @@ function GetDataView(datas) {
     var mention = "";
     var my = parseFloat(student.aver);
     
-    if (my <= 4.9) {
-      mention = "Fail"
-    } else if (my <= 5) {
-      mention = "Poor"
-    } else if (my <= 6.4) {
+    if (my >= 50) {
+      mention = "Very good"
+    } else if (my >= 40) {
+      mention = "Good"
+    } else if (my >= 32.5) {
       mention = "Faily Good";
-    } else if (my <= 7.9) {
-      mention = "Good";
-    } else if (my <= 9.4) {
-      mention = "Very Good";
-    } else if (my <= 10) {
-      mention = "Excellent";
+    } else if (my >= 25) {
+      mention = "Fair";
+    } else if (my <= 24) {
+      mention = "Fail";
     }
 
     let tr = `
@@ -143,8 +156,8 @@ function GetDataView(datas) {
             <td>${student.sum}</td>
             <td>${student.aver}</td>
             <td style="color:red;">${student.Rank}</td>
-            <td>${mention}</td>
-            <td style="display: block;">${mention}${student.sex}</td> 
+            <td style="color:red;">${mention}</td>
+            <td style="display: none;">${mention}${student.sex}</td> 
     `;
     tbody.innerHTML += tr;
   });
