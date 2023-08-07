@@ -105,9 +105,8 @@ function addItemsToTable(name, id, sex, sumNov, average, myKh) {
       )
     })
     aaa.addEventListener('click',()=>{
-      if (document.getElementById(`${av}`).innerHTML == 0){
-        document.getElementById(`${av}`).innerHTML = '';
-        
+      if (td4.innerHTML == 0) {
+        td4.innerHTML = '';
       } else {
 
       }

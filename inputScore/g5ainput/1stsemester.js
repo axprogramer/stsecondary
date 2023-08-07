@@ -28,8 +28,8 @@ function selectAllData() {
           var name = CurrentRecord.val().name;
           var id = CurrentRecord.val().id;
           var sex = CurrentRecord.val().sex;
-          var my1Se = CurrentRecord.val().my1Se;
-          var my1Sa = CurrentRecord.val().my1Sa;
+          var my1Se = CurrentRecord.val().summy1Se;
+          var my1Sa = CurrentRecord.val().summy1Sa;
           var myKh = CurrentRecord.val().myKh;
           addItemsToTable(name, id, sex, my1Se, my1Sa, myKh);
           showAuto();
@@ -56,6 +56,11 @@ function addItemsToTable(name, id, sex, my1Se, my1Sa, myKh) {
   var td5 = document.createElement('td');
   var td6 = document.createElement('td');
   var td7 = document.createElement('td');
+  td4.contentEditable = true;
+  var sumID = `${id}sum`;
+  var av = `${id}av`;
+  td3.id = sumID;
+  td4.id = av;
 
   stdList.push([name, id, sex, my1Se, my1Sa, myKh]);
   td0.innerHTML = ++studentN0;
@@ -64,6 +69,47 @@ function addItemsToTable(name, id, sex, my1Se, my1Sa, myKh) {
   td3.innerHTML = my1Se;
   td4.innerHTML = my1Sa;
 
+  if (my1Se == undefined) {
+    td3.innerHTML = '0';
+
+  } else {
+    td3.innerHTML = my1Se;
+
+  }
+  if (my1Sa == undefined) {
+    td4.innerHTML = '0';
+
+  } else {
+    td4.innerHTML = my1Sa;
+
+  }
+  const sleep = async (milliseconds) => {
+    await new Promise(resolve => {
+      return setTimeout(resolve, milliseconds);
+    });
+    let aaa = document.getElementById(`${av}`);
+    aaa.addEventListener('input', () => {
+      var kk = aaa.innerHTML;
+      var su = kk * 4;
+      document.getElementById(`${sumID}`).innerHTML = su;
+      firebase.database().ref(`${db}/` + `${db3}/` + id).update(
+        {
+          summy1Se: su,
+          summy1Sa: kk,
+        },
+      )
+    })
+    aaa.addEventListener('click', () => {
+      if (td4.innerHTML == 0) {
+        td4.innerHTML = '';
+      } else {
+
+      }
+
+    })
+
+  };
+  sleep(2000);
 
   trow.appendChild(td0);
   trow.appendChild(td1);
@@ -203,10 +249,6 @@ function NewBox() {
   Mname.value = "";
   Mid.value = "";
   Msex.value = "";
-  MspeakingNov.value = "";
-  MwritingNov.value = "";
-  MlisteningNov.value = "";
-  MreadingNov.value = "";
   MaverageNov.value = "";
   firtSescore.value = "";
   firstSeA.value = "";
@@ -284,7 +326,7 @@ iii.addEventListener('input', divid2, false);
 var table1 = document.getElementById("myScoretable1");
 var table2 = document.getElementById("myScoretable2");
 var table3 = document.getElementById("myTable");
-table1.style.display = "none";
+// table1.style.display = "none";
 table2.style.display = "none";
 table3.style.display = "none";
 //Style

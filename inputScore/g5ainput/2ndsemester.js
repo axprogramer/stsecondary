@@ -28,8 +28,8 @@ function selectAllData() {
           var name = CurrentRecord.val().name;
           var id = CurrentRecord.val().id;
           var sex = CurrentRecord.val().sex;
-          var my2Se = CurrentRecord.val().my2Se;
-          var my2Sa = CurrentRecord.val().my2Sa;
+          var my2Se = CurrentRecord.val().summy2Se;
+          var my2Sa = CurrentRecord.val().summy2Sa;
           var myKh = CurrentRecord.val().myKh;
           addItemsToTable(name, id, sex, my2Se, my2Sa, myKh);
           showAuto();
@@ -55,6 +55,12 @@ function addItemsToTable(name, id, sex, my2Se, my2Sa, myKh) {
   var td5 = document.createElement('td');
   var td6 = document.createElement('td');
   var td7 = document.createElement('td');
+  
+  td4.contentEditable = true;
+  var sumID = `${id}sum`;
+  var av = `${id}av`;
+  td3.id = sumID;
+  td4.id = av;
 
   stdList.push([name, id, sex, my2Se, my2Sa, myKh]);
   td0.innerHTML = ++studentN0;
@@ -62,6 +68,49 @@ function addItemsToTable(name, id, sex, my2Se, my2Sa, myKh) {
   td2.innerHTML = sex;
   td3.innerHTML = my2Se;
   td4.innerHTML = my2Sa;
+
+  if (my2Se == undefined) {
+    td3.innerHTML = '0';
+
+  } else {
+    td3.innerHTML = my2Se;
+
+  }
+  if (my2Sa == undefined) {
+    td4.innerHTML = '0';
+
+  } else {
+    td4.innerHTML = my2Sa;
+
+  }
+  const sleep = async (milliseconds) => {
+    await new Promise(resolve => {
+      return setTimeout(resolve, milliseconds);
+    });
+    let aaa = document.getElementById(`${av}`);
+    aaa.addEventListener('input', () => {
+      var kk = aaa.innerHTML;
+      var su = kk * 4;
+      document.getElementById(`${sumID}`).innerHTML = su;
+      firebase.database().ref(`${db}/` + `${db3}/` + id).update(
+        {
+          summy2Se: su,
+          summy2Sa: kk,
+        },
+      )
+    })
+    aaa.addEventListener('click', () => {
+      if (td4.innerHTML == 0) {
+        td4.innerHTML = '';
+      } else {
+
+      }
+
+    })
+
+  };
+  sleep(2000);
+
 
 
   trow.appendChild(td0);
@@ -201,11 +250,6 @@ function NewBox() {
   Mname.value = "";
   Mid.value = "";
   Msex.value = "";
-  MspeakingNov.value = "";
-  MwritingNov.value = "";
-  MlisteningNov.value = "";
-  MreadingNov.value = "";
-  MaverageNov.value = "";
   firtSescore.value = "";
   firstSeA.value = "";
 }
@@ -285,7 +329,7 @@ iii.addEventListener('input', divid2, false);
 var table1 = document.getElementById("myScoretable1");
 var table2 = document.getElementById("myScoretable2");
 var table3 = document.getElementById("myTable");
-table1.style.display = "none";
+// table1.style.display = "none";
 table2.style.display = "none";
 table3.style.display = "none";
 //Style
@@ -295,4 +339,5 @@ table3.style.display = "none";
 // div.style.height = "30em";
 document.getElementById("myTable2").style.display = "block";
 document.getElementById("my1stsemetable").style.display = "block";
+document.getElementById("showSEME").innerHTML = "2nd Semester Sum Scores";
 
