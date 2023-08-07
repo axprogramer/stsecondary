@@ -263,11 +263,10 @@ $(document).ready(function () {
     var showw = document.getElementById("fFails");
     var sumFs = parseFloat(m1) + parseFloat(m2);
     var sum = f2 - sumFs;
-    pass.innerHTML = sum;
-    tfail.innerHTML = sumFs;
-    showw.innerHTML = m2;
-    console.log(sum);
-
+    pass.innerHTML = sum; //passed students
+    tfail.innerHTML = sumFs; //total fails students
+    showw.innerHTML = m2; // total female students
+    console.log(m2);
     var noOfOccurance = 0;
 
     $("#tbody3 td").each(function (ind, obj) {
@@ -296,6 +295,7 @@ $(document).ready(function () {
 
     var show2 = document.getElementById("fMst");
     show2.innerHTML = failSM;
+    console.log(`Female: ${failSM}`);
 
   }
   // Female
